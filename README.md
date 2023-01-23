@@ -6,6 +6,7 @@ Create.py is where the heavy lifting occurs. Colors.py simply has a color dictio
 
 This project is NOT complete, and these files are for documentation only. Development is still being made to integrate these processes into a web application.
 
+All code authored by me.
 Surain Saigal
 
 
