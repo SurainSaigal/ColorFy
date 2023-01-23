@@ -7,7 +7,7 @@ import concurrent.futures
 from colorthief import ColorThief
 
 import matplotlib.pyplot as plt
-import project_documentation.ColorFy.colors as clr
+import colors as clr
 import webcolors
 
 client_id = 'your id here'
