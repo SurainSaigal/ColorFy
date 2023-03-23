@@ -1,21 +1,16 @@
 from io import BytesIO
 import requests
-from PIL import Image, ImageEnhance
+from PIL import Image
 from functools import reduce
 import stopwatch
 import concurrent.futures
 from colorthief import ColorThief
-
-import matplotlib.pyplot as plt
 import colors as clr
-import webcolors
 
-client_id = 'your id here'
-client_secret = 'your secret here'
-auth_token = 'your auth token here'
+# generate auth token at https://developer.spotify.com/console/get-current-user-top-artists-and-tracks/
+auth_token = 'BQAr-IPHhPI8KivSc0f48e8NGxHhz4tyazNzRvs5uriNEtfZqWnwqgeJHFKoOOiUZqPqlLqTxHBIBUh9D9kfGw3Xcc0__F9CotnrM5cv76F4DYtrRqHpapNxIPdD9QUmS193JU9qPnYBf3cZeIpCmCKkeBmLkWxcdKgMLFkqIib7YoM8L3SYTjOCizfZSRTJkq-YzMyIkS2c'
 
 timer = stopwatch.Stopwatch()
-
 
 def makeCollage(item_type, limit, offset, time_range):
     print(time_range)
@@ -65,6 +60,7 @@ def makeCollage(item_type, limit, offset, time_range):
         count += 1
 
     print("API call done...")
+
     images = []
     with concurrent.futures.ThreadPoolExecutor(32) as executor:
         for i in imageLinks.values():
@@ -92,17 +88,9 @@ def makeCollage(item_type, limit, offset, time_range):
     print("dominant colors found... avg file save time: " + str(fileConvertTime / len(images))
           + "  avg color finding time: " + str(dominantColorFindTime / len(images)))
 
-    sorted = sortColors(images, colors)
-
-    # Possible alternative:
-
-    # newImages = []
-    # for color in clr.COLORS:
-    #     if (sorted.get(color) != None):
-    #         for image in sorted.get(color):
-    #             newImages.append(image)
-
-    constructColoredCollage(sorted, imgSize)
+    
+    constructCollage(images, imgSize)
+    constructColoredCollage(images, colors, imgSize)
 
 
 def sortColors(images: list, colors: list):
@@ -136,27 +124,23 @@ def constructCollage(images: list, imgSize: int):
     collage.show()
 
 
-def constructColoredCollage(sortedImages: dict, imgSize: int):
+def constructColoredCollage(images: list, colors: list, imgSize: int):
+    sorted = sortColors(images, colors)
     dim = 7
     collage = Image.new(mode="RGB", size=(imgSize * dim, imgSize * dim))
-
-    print(sortedImages)
-    imgNum = 0
     r = 0
     for color in clr.MAIN_COLORS:
-        print(color)
         currImages = []
-        dark = sortedImages.get("dark " + color)
+        dark = sorted.get("dark " + color)
         if dark != None:
             for darkImg in dark:
                 currImages.append(darkImg)
 
-        light = sortedImages.get("light " + color)
+        light = sorted.get("light " + color)
         if light != None:
             for lightImg in light:
                 currImages.append(lightImg)
 
-        print(currImages)
         c = 0
         for image in currImages:
             collage.paste(image, (imgSize * c, imgSize * r))
@@ -198,13 +182,29 @@ def getDim(num):
     return smallest
 
 
-makeCollage('tracks', 100, 0, 'long_term')
-makeCollage('tracks', 100, 0, 'medium_term', )
-makeCollage('tracks', 100, 0, 'short_term')
+def main():
+    length = ''
+    while(length != 's' and length != 'm' and length != 'l'):
+        length = input('Would you like a short (1 month), medium (6 months), or long (all time) term collage? Enter s, m, or, l: ')
+        if(length != 's' and length != 'm' and length != 'l'):
+            print('INVALID!')
+    
+    if(length == 's'):
+        term = 'short_term'
+    if(length == 'm'):
+        term = 'medium_term'
+    if(length == 'l'):
+        term = 'long_term'
+
+    makeCollage('tracks', 100, 0, term)
+    input('press enter to end')
+    
+
+if __name__ == '__main__':
+    main()
+
+# makeCollage('artists', 100, 0, 'long_term')
+# makeCollage('artists', 100, 0, 'medium_term')
+# makeCollage('artists', 100, 0, 'short_term')
 
 
-makeCollage('artists', 100, 0, 'long_term')
-makeCollage('artists', 100, 0, 'medium_term')
-makeCollage('artists', 100, 0, 'short_term')
-
-input('press enter to end')
