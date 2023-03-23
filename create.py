@@ -8,7 +8,7 @@ from colorthief import ColorThief
 import colors as clr
 
 # generate auth token at https://developer.spotify.com/console/get-current-user-top-artists-and-tracks/
-auth_token = 'BQAr-IPHhPI8KivSc0f48e8NGxHhz4tyazNzRvs5uriNEtfZqWnwqgeJHFKoOOiUZqPqlLqTxHBIBUh9D9kfGw3Xcc0__F9CotnrM5cv76F4DYtrRqHpapNxIPdD9QUmS193JU9qPnYBf3cZeIpCmCKkeBmLkWxcdKgMLFkqIib7YoM8L3SYTjOCizfZSRTJkq-YzMyIkS2c'
+auth_token = 'REPLACE ME WITH AUTH TOKEN'
 
 timer = stopwatch.Stopwatch()
 

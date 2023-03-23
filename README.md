@@ -6,7 +6,11 @@ Create.py is where the heavy lifting occurs. Colors.py simply has a color dictio
 
 This project is NOT complete. Development is still being made to integrate these processes into a web application.
 
-To see a current prototype, clone this repo and run "pip3 install -r requirements.txt" or "pip install -r requirements.txt". Then, run create.py.
+To see a current prototype, clone this repo and run "pip3 install -r requirements.txt" or "pip install -r requirements.txt". 
+
+Then, replace the auth_token variable at the top of playlist.py with a valid auth token, which can be generated at https://developer.spotify.com/console/get-current-user-top-artists-and-tracks/
+
+Then, run create.py.
 
 All code authored by me.
 Surain Saigal
